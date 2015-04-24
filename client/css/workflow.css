@@ -1,0 +1,37 @@
+
+div.workflow {
+    float: left;
+    padding: 6px 7px;
+    margin: 3px;
+    text-align: left;
+    line-height: 14px;
+    color: #333;
+    font-size: 12px;
+    font-family: "Helvetica Neue",sans-serif;
+    height: 182px;
+    width: 212px;
+    overflow: hidden;
+    border-top: 1px solid transparent;
+    cursor: pointer;
+}
+
+div.workflow img {
+    margin-bottom: 5px;
+    padding: 0px;
+}
+
+div.workflow-hover {
+    background-color: #eee;
+}
+
+div.workflow.x-item-selected {
+    background-color: #D3E1F1 !important;
+}
+
+div.workflow strong {
+    color: #000;
+    display: block;
+}
+div.workflow span {
+    color: #999;
+}

@@ -1,0 +1,40 @@
+template(name='welcome')
+  ol.breadcrumb
+    li
+      a(href='#') Home
+    li
+      a(href='#') Library
+    li.active Data
+
+
+  .container
+      h3 Orafora Workflow Playground
+      p  Workflow designer using Javascript
+      p  Source code is on
+        a(href='https://github.com/tvararu/meteor-famous-playground/tree/master/client/views', target='_blank') Github .
+      ul
+        li
+          h3
+            a(href="") Simple square
+          p The simplest Famous example: a centered square.
+        li
+          h3
+            a(href="") Snap vs. Spring transition
+          p A visual comparison of the Snap and Spring transitions.
+        li
+          h3
+            a(href="") Color transition
+          p An example color transition. The reason this is interesting is because it&apos;s accomplished not by animating the CSS property, but by overlaying two Surfaces and opacitating them.
+        li
+          h3
+            a(href="") Meteor collection
+          p  The first example that actually uses Meteor for anything. Monitor a collection, and update the content of a surface reactively. View this example in two browser windows for it to make actual sense.
+        li
+          h3
+            a(href="") Reactive Famous deck
+          p This is a nearly unmodified copy of the Famous &quot;Deck&quot; example. The difference is that the deck will close/open whenever any client clicks on it. Which looks really cool in practice.
+        li
+          h3
+            a(href="") Drag and return
+          p Drag a surface, and have it return to its initial position with a transition.
+
