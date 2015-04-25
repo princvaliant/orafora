@@ -4,7 +4,8 @@ Ext.define('orf.view.workflow.list.Main', {
   requires: [
     'orf.view.workflow.list.Controller',
     'orf.view.workflow.list.ViewModel',
-    'orf.view.workflow.list.View'
+    'orf.view.workflow.list.View',
+    'orf.view.workflow.list.Form'
   ],
   controller: 'workflowlist',
   viewModel: {
@@ -13,6 +14,7 @@ Ext.define('orf.view.workflow.list.Main', {
   layout: 'fit',
   items: {
     xtype: 'workflowlistview',
+    reference: 'reflistview',
     listeners: {
       selectionchange: 'onWorkflowSelected',
       itemdblclick: 'onWorkflowOpen'
@@ -59,24 +61,27 @@ Ext.define('orf.view.workflow.list.Main', {
       value: '{sortValue}'
     }
   }, {
+    xtype: 'tbseparator'
+  }, {
     text: 'Add',
     itemId: 'add',
     glyph: 'xf0fe@FontAwesome',
     handler: 'onHeaderButton'
   }, {
+    text: 'Duplicate',
+    itemId: 'duplicate',
+    glyph: 'xf0c5@FontAwesome',
+    handler: 'onHeaderButton',
+    bind: {
+      disabled: '{!reflistview.selection}'
+    }
+  }, {
     text: 'Delete',
     itemId: 'delete',
     glyph: 'xf00d@FontAwesome',
-    handler: 'onHeaderButton'
-  }, {
-    text: 'Copy',
-    itemId: 'copy',
-    glyph: 'xf0c5@FontAwesome',
-    handler: 'onHeaderButton'
-  }, {
-    text: 'Paste',
-    itemId: 'paste',
-    glyph: 'xf0ea@FontAwesome',
-    handler: 'onHeaderButton'
+    handler: 'onHeaderButton',
+    bind: {
+      disabled: '{!reflistview.selection}'
+    }
   }]
 });

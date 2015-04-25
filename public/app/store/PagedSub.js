@@ -29,5 +29,8 @@ var store = Ext.define('orf.store.PagedSub', {
        store.currentPage = 1;
        store.proxy.startPos = 0;
     }
+  },
+  onAdd: function(callback) {
+      this.addCallback = callback;
   }
 });

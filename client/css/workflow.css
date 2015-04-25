@@ -2,7 +2,7 @@
 div.workflow {
     float: left;
     padding: 6px 7px;
-    margin: 3px;
+    margin: 6px;
     text-align: left;
     line-height: 14px;
     color: #333;
@@ -11,13 +11,14 @@ div.workflow {
     height: 182px;
     width: 212px;
     overflow: hidden;
-    border-top: 1px solid transparent;
+
     cursor: pointer;
 }
 
 div.workflow img {
     margin-bottom: 5px;
     padding: 0px;
+    border: 1px solid #AAA;
 }
 
 div.workflow-hover {

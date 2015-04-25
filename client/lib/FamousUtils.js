@@ -17,6 +17,7 @@
 
       displayMainTabPanel: function(panel, startRect) {
 
+          var main;
           var self = FamousUtils;
           var parentRect = Ext.get('sizerPlaceholder').parent().dom.getBoundingClientRect();
 
@@ -69,7 +70,7 @@
               var h = Ext.get('sizerPlaceholder').parent().dom.offsetHeight;
               var w = Ext.get('sizerPlaceholder').parent().dom.offsetWidth;
 
-              var main = Ext.create({
+              main = Ext.create({
                   xtype: panel,
                   renderTo: panel,
                   listeners: {
@@ -91,6 +92,8 @@
                   width: transWidth,
                   hide: transHide
               };
+          } else {
+            main = Ext.ComponentQuery.query(panel)[0];
           }
 
           var active = self.panels[panel];
@@ -124,5 +127,6 @@
           }
 
           self.prev = panel;
+          return main;
       }
   };

@@ -19,6 +19,7 @@ Ext.define('orf.Application', {
 
     'orf.view.layout.Tab',
     'orf.view.base.ListGrid',
+    'orf.view.base.FormDialog',
 
     'orf.view.workflow.list.Main',
     'orf.view.workflow.design.Main',

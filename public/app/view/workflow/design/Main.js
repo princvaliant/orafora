@@ -26,10 +26,5 @@ Ext.define('orf.view.workflow.design.Main', {
     split: true,
     region: 'east',
     width: 300
-  }],
-  listeners: {
-      afterrender: function( panel, eOpts ) {
-          panel.getViewModel().init();
-      }
-  }
+  }]
 });

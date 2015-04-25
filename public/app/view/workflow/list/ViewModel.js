@@ -2,6 +2,11 @@ Ext.define('orf.view.workflow.list.ViewModel', {
   extend: 'Ext.app.ViewModel',
   alias: 'viewmodel.workflowlist',
   formulas: {
+    selected: {
+      get: function () {
+        return this.get('selectedWorkflow') !== null;
+      }
+    },
     filterValue: {
       get: function () {
         var state = Ext.state.Manager.get('workflowlistFilterTextbox') || {};
@@ -40,11 +45,10 @@ Ext.define('orf.view.workflow.list.ViewModel', {
     }
   },
   sort: function (value) {
-      var s = value.split('|');
-      this.getStore().sort(s[0], s[1]);
+    var s = value.split('|');
+    this.getStore().sort(s[0], s[1]);
   },
   getStore: function () {
     return this.getView().down('workflowlistview').store;
   },
 });
-

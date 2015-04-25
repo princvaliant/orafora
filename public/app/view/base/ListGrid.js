@@ -1,12 +1,12 @@
 Ext.define('orf.view.base.ListGrid', {
   extend: 'Ext.grid.Panel',
+  xtype: 'baselistgrid',
   requires: [
     'Ext.data.*',
     'Ext.grid.*',
     'Ext.util.*',
     'Ext.toolbar.Paging'
   ],
-  xtype: 'baselistgrid',
   frame: true,
   collapsible: false,
   border: false,
