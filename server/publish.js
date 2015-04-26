@@ -72,7 +72,12 @@ function createMethods(name) {
     };
     methods['insert_' + name] = function (records) {
       _.each(records, function (record) {
-        record._id = Meteor.hashid();
+        if (record.id) {
+          record._id = record.id;
+        } else {
+          record._id = Meteor.hashid();
+        }
+        delete (record.id);
         insertInfo(record);
         mongoCollection.insert(record);
       });

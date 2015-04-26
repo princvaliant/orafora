@@ -9,8 +9,8 @@ Ext.define('orf.view.workflow.list.Controller', {
   },
   onWorkflowOpen: function (dataview, selection, comp) {
     var vm = this.getViewModel();
-    var panel = FamousUtils.displayMainTabPanel('workflowdesignmain', comp.getBoundingClientRect());
-    panel.getViewModel().init(vm.get('selectedWorkflow'), vm.getStore());
+    var panel = FamousUtils.showMainTabPanel('workflowdesignmain', comp.getBoundingClientRect());
+    panel.getViewModel().init(vm.get('selectedWorkflow'), vm.getStore(), comp.getBoundingClientRect());
   },
   onHeaderButton: function (btn) {
     var vm = this.getViewModel(),
@@ -40,7 +40,6 @@ Ext.define('orf.view.workflow.list.Controller', {
       var rec = _.clone(vm.get('selectedWorkflow'));
       rec.id = null;
       rec.data._id = null;
-      rec.data.name = rec.data.name + ' - copy';
       wdup.down('form').loadRecord(rec);
       this.getView().add(wdup);
       wdup.show();
@@ -67,15 +66,15 @@ Ext.define('orf.view.workflow.list.Controller', {
       store = vm.getStore();
     var form = btn.up('form').getForm();
     if (form.isValid()) {
-      store.add(form.getValues());
-      store.onAdd(function (model) {
-        var panel = FamousUtils.displayMainTabPanel('workflowdesignmain', {
-          left: 0,
-          top: 50,
-          height: 10,
-          width: 10
-        });
-        panel.getViewModel().init(model, store);
+      store.add(form.getValues(), function (model) {
+        var rect = {
+          left: 14,
+          top: 100,
+          height: 150,
+          width: 200
+        };
+        var panel = FamousUtils.showMainTabPanel('workflowdesignmain', rect);
+        panel.getViewModel().init(model, store, rect);
       });
       store.sync();
       btn.up('window').close();

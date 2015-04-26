@@ -101,7 +101,9 @@ Ext.define('orf.proxy.MeteorProxySub', {
         if (recs[i].id === id) {
           for (var f in record) {
             recs[i].data[f] = record[f];
+            Session.set('updated_' + id, record);
           }
+
         }
       }
     }
@@ -109,9 +111,9 @@ Ext.define('orf.proxy.MeteorProxySub', {
       record._id = id;
       var Model = this.getModel();
       var model = new Model(record);
-      if (this.store.addCallback !== undefined) {
-          this.store.addCallback(model);
-          this.store.addCallback = undefined;
+
+      if (this.store.insertCallback !== undefined && this.store.insertCallbackId === model.data._id) {
+        this.store.insertCallback(model);
       }
       var index = 0;
       if (before) {

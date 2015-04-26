@@ -12,7 +12,7 @@ var store = Ext.define('orf.store.PagedSub', {
       type: 'meteorproxysub'
     }
   },
-   listeners: {
+  listeners: {
     beforesort: function (store) {
       var sortString = '';
       store.getSorters().each(function (sorter) {
@@ -25,12 +25,19 @@ var store = Ext.define('orf.store.PagedSub', {
       }
       store.tempSortString = sortString;
     },
-    filterchange: function ( store, filters, eOpts ) {
-       store.currentPage = 1;
-       store.proxy.startPos = 0;
+    filterchange: function (store, filters, eOpts) {
+      store.currentPage = 1;
+      store.proxy.startPos = 0;
     }
   },
-  onAdd: function(callback) {
-      this.addCallback = callback;
+  add: function (a, callback) {
+    if (!a.id) {
+      a.id = Meteor.hashid();
+    }
+    if (callback) {
+        this.insertCallbackId = a.id;
+        this.insertCallback = callback;
+    }
+    return this.superclass.add.call(this, a);
   }
 });

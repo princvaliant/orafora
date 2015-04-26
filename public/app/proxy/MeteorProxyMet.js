@@ -23,7 +23,9 @@ Ext.define('orf.proxy.MeteorProxyMet', {
     len = recs.length;
     for (i; i < len; i++) {
       if (type === "insert") {
-        recs[i].data._id = '';
+        if (!recs[i].data._id ) {
+          recs[i].data._id = Meteor.hashid();
+        }
       }
       data.push(recs[i].data);
     }
