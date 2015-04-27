@@ -17,7 +17,6 @@ Ext.define('orf.Application', {
     'orf.model.domain.Member',
     'orf.model.workflow.Workflow',
 
-    'orf.view.layout.Tab',
     'orf.view.base.ListGrid',
     'orf.view.base.FormDialog',
 

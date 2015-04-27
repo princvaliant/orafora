@@ -26,5 +26,5 @@ Template.header.events({
 });
 
 var headerButtonsClicked = function (panel) {
-  FamousUtils.showMainTabPanel(panel, {left: 2300, top: 40, height: 700, width: 960});
+  FamousUtils.showMainTabPanel(panel, {left: 1300, top: 40, height: 700, width: 960});
 };

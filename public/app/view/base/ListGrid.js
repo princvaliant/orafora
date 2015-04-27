@@ -15,9 +15,9 @@ Ext.define('orf.view.base.ListGrid', {
   scrollable: true,
   viewConfig: {
     trackOver: true,
-    preserveScrollOnRefresh: false
+    preserveScrollOnRefresh: true
   },
   selModel: {
-    pruneRemoved: true
+    pruneRemoved: false
   }
 });

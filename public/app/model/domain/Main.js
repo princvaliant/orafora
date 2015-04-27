@@ -3,24 +3,24 @@ Ext.define('orf.model.domain.Main', {
   statics: {
     mongoCollection: 'dmn',
   },
-  fields: [
-   {
+  fields: [{
       name: 'name',
       type: 'string'
-    },
-    {
-        name: 'categoryId',
-        reference: 'domain.Category',
-        type: 'string'
-    },
-    {
+    }, {
+      name: 'categoryId',
+      reference: 'domain.Category',
+      type: 'string'
+    }, {
       name: 'summary',
       type: 'string'
     },
 
   ],
-    validators: {
-        name: { type: 'length', min: 2 },
-        categoryId: 'presence'
-    }
+  validators: {
+    name: {
+      type: 'length',
+      min: 2
+    },
+    categoryId: 'presence'
+  }
 });

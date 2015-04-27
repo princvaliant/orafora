@@ -3,7 +3,7 @@ var store = Ext.define('orf.store.PagedSub', {
   alias: 'store.pagedsub',
   autoLoad: false,
   autoSync: false,
-  remoteGroup: true,
+  remoteGroup: false,
   remoteFilter: true,
   remoteSort: false,
   pageSize: 25,

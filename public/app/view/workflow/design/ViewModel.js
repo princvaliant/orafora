@@ -32,6 +32,9 @@ Ext.define('orf.view.workflow.design.ViewModel', {
       self.data.paper = $('#paperId');
       self.data.renderer = new Package.bpmn.Modeler({
         container: self.data.paper
+        // , moddleExtensions: {
+        //   qa: qaPackage
+        // }
       });
       // check file api availability
       if (!window.FileList || !window.FileReader) {
@@ -41,6 +44,10 @@ Ext.define('orf.view.workflow.design.ViewModel', {
       } else {
         self.registerFileDrop(self.openDiagram);
       }
+
+      self.data.renderer.on('element.click', function (e) {
+        self.initInspector(e.element.id, e.element.type);
+      });
     }
     self.data.currentWorkflow = workflow;
     Tracker.autorun(function () {
@@ -53,10 +60,17 @@ Ext.define('orf.view.workflow.design.ViewModel', {
     self.openDiagram(workflow.data.bpmn);
   },
 
+  initInspector: function (id, type) {
+
+    var moddle = this.data.renderer.get('moddle');
+  },
+
   save: function () {
 
     var self = this;
-    self.data.renderer.saveSVG(function (d, svg) {
+    self.data.renderer.saveSVG({
+      format: false
+    }, function (d, svg) {
       self.data.currentWorkflow.set('svg', svg);
       self.data.renderer.saveXML({
         format: false

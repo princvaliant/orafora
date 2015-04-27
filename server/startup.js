@@ -1,6 +1,7 @@
 Meteor.startup(function () {
 
   // Initialize header buttons
+  HeaderButtons.remove();
   if (!HeaderButtons.findOne()) {
     HeaderButtons.insert({
       name: 'Workflows',
@@ -9,9 +10,9 @@ Meteor.startup(function () {
       idx: 1
     });
         HeaderButtons.insert({
-      name: 'Design',
-      icon: 'random',
-      panel: 'workflowdesignmain',
+      name: 'Domains',
+      icon: 'cogs',
+      panel: 'domainmain',
       idx: 2
     });
   }

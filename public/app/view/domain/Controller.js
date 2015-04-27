@@ -8,8 +8,9 @@ Ext.define('orf.view.domain.Controller', {
       record;
 
     if (action === 'add') {
-      record = store.insert(0, {})[0];
-      vm.set('currentDomain', record);
+      var model = store.insert(0, {name:'Dummy', categoryId:'dummy'})[0];
+      console.log(model);
+      vm.set('currentDomain', model);
     }
 
     if (action === 'delete') {

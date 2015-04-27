@@ -20,6 +20,11 @@ Ext.define('orf.view.workflow.design.Paper', {
       text: 'Save',
       glyph: 'xf0c7@FontAwesome',
       handler: 'onSaveButton'
+    }, '->', {
+      action: 'download',
+      text: 'View BPMN 2.0 xml',
+      glyph: 'xf019@FontAwesome',
+      handler: 'onDownloadButton'
     }]
   }],
   items: [{

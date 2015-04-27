@@ -6,7 +6,9 @@ Ext.define('orf.view.domain.Grid', {
   modelValidation: true,
   multiSelect: false,
   store: Ext.create('orf.store.PagedSub', {
-    model: 'orf.model.domain.Main'
+    model: 'orf.model.domain.Main',
+    autoLoad: true,
+    autoSync: true
   }),
   publishes: ['currentDomain'],
   config: {
@@ -22,17 +24,30 @@ Ext.define('orf.view.domain.Grid', {
       this.setCurrentDomain(domain);
     }
   },
+  plugins: [
+    Ext.create('Ext.grid.plugin.CellEditing', {
+      clicksToEdit: 2
+    })
+  ],
   columns: [{
     text: 'Name',
     sortable: true,
     stateId: 'domainListStateName',
     dataIndex: 'name',
+    editor: {
+      xtype: 'textfield',
+      allowBlank: false
+    },
     flex: 3
   }, {
     text: 'Category',
     sortable: true,
     stateId: 'domainListStateCategory',
     dataIndex: 'categoryId',
+    editor: {
+      xtype: 'textfield',
+      allowBlank: true
+    },
     flex: 2
   }],
   dockedItems: [{
@@ -69,11 +84,11 @@ Ext.define('orf.view.domain.Grid', {
     }]
   }],
   bbar: {
-    xtype: 'pagingtoolbar',
-    bind: {
-      store: '{domains}'
-    },
-    displayInfo: true
+   xtype: 'pagingtoolbar',
+   bind: {
+     store: '{domains}'
+   },
+   displayInfo: true
   },
   updateCurrentDomain: function (current, previous) {
     var sm = this.getSelectionModel();

@@ -36,7 +36,7 @@
           align: [0, 0],
           origin: [0, 0],
           transform: function () {
-              return Transform.translate(0, 0, transHide.get());
+            return Transform.translate(0, 0, transHide.get());
           }
         });
 
@@ -81,8 +81,8 @@
               that.setHeight(h);
               that.setWidth(w);
               Ext.EventManager.onWindowResize(function () {
-                that.setHeight(Ext.get(panel).parent().getHeight());
-                that.setWidth(Ext.get(panel).parent().getWidth());
+                that.setHeight(Ext.get('sizerPlaceholder').parent().dom.offsetHeight);
+                that.setWidth(Ext.get('sizerPlaceholder').parent().dom.offsetWidth);
               });
             }
           }
@@ -138,27 +138,31 @@
       var self = FamousUtils;
       var parentRect = Ext.get('sizerPlaceholder').parent().dom.getBoundingClientRect();
       var active = self.panels[panelToHide];
-      self.panels[panelToShow].hide.set(1);
-      active.left.set(endRect.left, {
-        duration: 1200,
-        curve: Easing.inOutQuint
-      });
-      active.top.set(endRect.top - 50, {
-        duration: 1200,
-        curve: Easing.inOutQuint
-      });
-      active.height.set(endRect.height / parentRect.height, {
-        duration: 1200,
-        curve: Easing.inOutQuint
-      });
-      active.width.set(endRect.width / parentRect.width, {
+      if (self.panels[panelToShow]) {
+        self.panels[panelToShow].hide.set(1);
+      }
+      if (active && endRect) {
+        active.left.set(endRect.left, {
           duration: 1200,
           curve: Easing.inOutQuint
-        },
-        function () {
-          active.hide.set(0);
-          active.left.set(5000);
-        }
-      );
+        });
+        active.top.set(endRect.top - 50, {
+          duration: 1200,
+          curve: Easing.inOutQuint
+        });
+        active.height.set(endRect.height / parentRect.height, {
+          duration: 1200,
+          curve: Easing.inOutQuint
+        });
+        active.width.set(endRect.width / parentRect.width, {
+            duration: 1200,
+            curve: Easing.inOutQuint
+          },
+          function () {
+            active.hide.set(0);
+            active.left.set(5000);
+          }
+        );
+      }
     }
   };

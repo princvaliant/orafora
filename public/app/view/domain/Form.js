@@ -12,7 +12,7 @@ Ext.define('orf.view.domain.Form', {
     style: 'width: 50%'
   },
   bodyPadding: 7,
-  modelValidation: true,
+  modelValidation: false,
   fieldDefaults: {
     labelWidth: 160,
     labelAlign: 'right',

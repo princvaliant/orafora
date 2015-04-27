@@ -46,15 +46,15 @@ Ext.define('orf.view.domain.ViewModel', {
         deep: true
       },
       get: function (domain) {
-        if (!domain) {
-            domain = this.getStore().insert(0, {})[0];
-            this.set('currentDomain', domain);
+        if (domain) {
+          var ret = {
+            dirty: domain ? domain.dirty : false,
+            valid: domain && domain.isModel ? domain.isValid() : true
+          };
+          return ret.dirty && ret.valid;
+        } else {
+          return false;
         }
-        var ret = {
-          dirty: domain ? domain.dirty : false,
-          valid: domain && domain.isModel ? domain.isValid() : true
-        };
-        return ret.dirty && ret.valid;
       }
     }
   },

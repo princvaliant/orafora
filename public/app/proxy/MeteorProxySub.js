@@ -111,7 +111,6 @@ Ext.define('orf.proxy.MeteorProxySub', {
       record._id = id;
       var Model = this.getModel();
       var model = new Model(record);
-
       if (this.store.insertCallback !== undefined && this.store.insertCallbackId === model.data._id) {
         this.store.insertCallback(model);
       }
