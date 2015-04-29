@@ -217,6 +217,7 @@
       },
 
       hideComp: function(comp) {
-          comp.surface.destroy();
+          comp.surface.cleanup();
+          comp.destroy();
       }
   };

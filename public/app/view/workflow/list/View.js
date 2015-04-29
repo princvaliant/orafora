@@ -17,8 +17,8 @@ Ext.define('orf.view.workflow.list.View', {
   scrollable: false,
   tpl: Ext.create('Ext.XTemplate',
     '<tpl for=".">',
-    '<div class="workflow">',
-    '<img style="width:200px;height:150px;min-height:150px" src=\'data:image/svg+xml;utf8,{svg}\'/>',
+    '<div class=\'workflow\'>',
+    '{svg}',
     '<strong>{name}</strong>',
     '</div>',
     '</tpl>'
