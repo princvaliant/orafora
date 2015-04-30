@@ -12,7 +12,7 @@
 
   Logger.setLevel("famous-views", "info");
 
-  FamousUtils = {
+  FUS = {
 
       famousMain: null,
       panels: {},
@@ -21,7 +21,7 @@
       showMainTabPanel: function(panel, startRect) {
 
           var main;
-          var self = FamousUtils;
+          var self = FUS;
           var parentRect = Ext.get('sizerPlaceholder').parent().dom.getBoundingClientRect();
 
           if (!self.panels.hasOwnProperty(panel)) {
@@ -68,7 +68,7 @@
                   content: document.getElementById(panel)
               });
 
-              FamousUtils.famousMain.content.add(hideModifier).add(posModifier).add(sizeModifier).add(surface);
+              FUS.famousMain.content.add(hideModifier).add(posModifier).add(sizeModifier).add(surface);
 
               var h = Ext.get('sizerPlaceholder').parent().dom.offsetHeight;
               var w = Ext.get('sizerPlaceholder').parent().dom.offsetWidth;
@@ -88,6 +88,7 @@
                       }
                   }
               });
+
               self.panels[panel] = {
                   left: transLeft,
                   top: transTop,
@@ -136,7 +137,7 @@
       hideMainTabPanel: function(panelToHide, panelToShow, endRect) {
 
           var main;
-          var self = FamousUtils;
+          var self = FUS;
           var parentRect = Ext.get('sizerPlaceholder').parent().dom.getBoundingClientRect();
           var active = self.panels[panelToHide];
           if (self.panels[panelToShow]) {
@@ -170,7 +171,7 @@
       showComp: function(definition) {
 
           var main;
-          var self = FamousUtils;
+          var self = FUS;
           var div = document.createElement('div');
           div.id = Meteor.hashid();
           Ext.getBody().appendChild(div);
@@ -195,7 +196,7 @@
 
           var rotateModifier = new Modifier({
               align: [0.3, 0.2],
-              origin: [0.5, 0],
+              origin: [0.5, 0.5],
               transform: function() {
                   return Transform.rotateY(transRotate.get());
               }
@@ -206,7 +207,7 @@
           });
           main.surface = surface;
 
-          self.ctx.add(translateModifier).add(rotateModifier).add(surface);
+          self.famousMain.content.add(translateModifier).add(rotateModifier).add(surface);
 
           transRotate.set(0, {
               duration: 1800,
