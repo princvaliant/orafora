@@ -11,7 +11,10 @@ Ext.define('orf.view.workflow.list.Main', {
   viewModel: {
     type: 'workflowlist'
   },
-  layout: 'fit',
+  layout: {
+    type:'auto'
+},
+autoScroll:true,
   items: {
     xtype: 'workflowlistview',
     reference: 'reflistview',

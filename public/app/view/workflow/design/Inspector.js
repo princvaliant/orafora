@@ -1,16 +1,18 @@
 Ext.define('orf.view.workflow.design.Inspector', {
-  extend: 'Ext.tab.Panel',
+  extend: 'Ext.panel.Panel',
   alias: 'widget.workflowdesigninspector',
-  title:'',
   requires: ['Ext.toolbar.Toolbar', 'Ext.form.field.ComboBox'],
-
-  initComponent: function () {
-
-    this.callParent(arguments);
-  },
-  listeners: {
-    'tabchange': function (tp, tab) {
-
-    }
-  }
+  layout: 'border',
+    resizable: true,
+  items: [{
+      xtype:'panel',
+      region: 'center'
+  }, {
+      xtype: 'panel',
+      title: 'Advanced',
+      region: 'east',
+      collapsible: true,
+      split: true,
+      width: 600
+  }]
 });

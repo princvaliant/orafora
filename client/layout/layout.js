@@ -5,7 +5,7 @@ Template.layout.rendered = function () {
   // });
   //
  // FView.mainCtx.setPerspective( 1000 );
-  FamousUtils.famousMain = FView.byId('headerFooterLayoutId').view;
+  FUS.famousMain = FView.byId('headerFooterLayoutId').view;
 };
 
 

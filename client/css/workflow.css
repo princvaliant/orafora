@@ -1,21 +1,21 @@
 div.workflow {
     float: left;
     padding: 0px 0px;
-    margin: 6px;
+    margin: 8px;
     text-align: center;
     line-height: 14px;
     color: #333;
     font-size: 12px;
     font-family: "Helvetica Neue", sans-serif;
-    height: 202px;
-    width: 242px;
+    height: 222px;
+    width: 342px;
     overflow: hidden;
     cursor: pointer;
 }
 
 div.workflow svg {
-    margin-bottom: 0px;
-    height: 170px;
+    margin: 0px;
+    height: 180px;
     padding: 0px;
     border: 1px solid #AAA;
 }

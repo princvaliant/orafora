@@ -29,6 +29,7 @@ Ext.define('orf.proxy.MeteorProxySub', {
     var options = {
       limit: operation._limit,
       skip: me.startPos === undefined ? operation._start : me.startPos,
+      fields: me.store.attrs,
       sort: sort
     };
 

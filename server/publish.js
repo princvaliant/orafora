@@ -36,7 +36,6 @@ Meteor.publish('genericpublish', function (collectionName, subId, filter, option
   self.added(subId + "_c", "_id", {
     count: count
   });
-
   var handleData = mongoCollection.find(prepareFilter(filter), options || {}).observe({
     added: function (doc, idx) {
       self.added(subId + "_d", doc._id, doc);

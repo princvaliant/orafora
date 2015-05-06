@@ -19,12 +19,11 @@ Ext.define('orf.view.workflow.design.Main', {
     width: '70%'
   }, {
     xtype: 'workflowdesigninspector',
-    title: 'Data inspector',
-    collapsible: true,
+    collapsible: false,
     stateful: true,
     stateId: 'workflowDesignInspectorId',
     split: true,
-    region: 'east',
-    width: 300
+    region: 'south',
+    height: 250
   }]
 });

@@ -74,12 +74,14 @@ Ext.define('orf.proxy.MeteorProxyMet', {
 
   processRead: function (operation) {
     var me = this;
+    me.store = operation._internalScope;
     me.meteorCollection = me.model.mongoCollection;
     var sort = me.senchaSortersToMeteorSorters(operation.getSorters());
     var filter = me.senchaFilterToMeteorFilter(operation.getFilters());
     var options = {
       limit: operation._limit,
       skip: me.startPos === undefined ? operation._start : me.startPos,
+      fields: me.store.attrs,
       sort: sort
     };
     var parent = operation._internalScope.__proto__;

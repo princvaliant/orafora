@@ -14,50 +14,58 @@ Ext.define('orf.view.workflow.design.ViewModel', {
       return get('title');
     }
   },
-  init: function (workflow, store, rect) {
+  init: function (id, rect) {
 
     var self = this;
+    var store = Ext.create('orf.store.PagedSub', {
+      model: 'orf.model.workflow.Workflow',
+      filters: [{
+        property: '_id',
+        value: id
+      }]
+    });
     self.set('store', store);
     self.set('rect', rect);
-
-    if (!workflow.data.bpmn) {
-      workflow.data.bpmn = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n " +
+    store.load(function (records, operation, success) {
+      var workflow = records[0];
+      if (!workflow.data.bpmn) {
+           workflow.data.bpmn = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n " +
         "<bpmn2:definitions xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:bpmn2=\"http://www.omg.org/spec/BPMN/20100524/MODEL\" xmlns:bpmndi=\"http://www.omg.org/spec/BPMN/20100524/DI\" xmlns:dc=\"http://www.omg.org/spec/DD/20100524/DC\" xmlns:di=\"http://www.omg.org/spec/DD/20100524/DI\" xsi:schemaLocation=\"http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd\" " +
         "id=\"" + workflow.data._id + "2\" targetNamespace=\"http://bpmn.io/schema/bpmn\">\n" +
         "<bpmn2:process id=\"" + workflow.data._id + "\" isExecutable=\"false\">\n    <bpmn2:startEvent id=\"StartEvent_1\"/>\n  </bpmn2:process>\n  <bpmndi:BPMNDiagram id=\"BPMNDiagram_1\">\n " +
         " <bpmndi:BPMNPlane id=\"BPMNPlane_1\" bpmnElement=\"" + workflow.data._id + "1\">\n      <bpmndi:BPMNShape id=\"_BPMNShape_StartEvent_2\" bpmnElement=\"StartEvent_1\">\n        <dc:Bounds height=\"36.0\" width=\"36.0\" x=\"131.0\" y=\"110.0\"/>\n      </bpmndi:BPMNShape>\n    </bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</bpmn2:definitions>";
-    }
-
-    if (!self.data.renderer) {
-      self.data.paper = $('#paperId');
-      self.data.renderer = new Package.bpmn.Modeler({
-        container: self.data.paper
-        // , moddleExtensions: {
-        //   qa: qaPackage
-        // }
-      });
-      // check file api availability
-      if (!window.FileList || !window.FileReader) {
-        window.alert(
-          'Looks like you use an older browser that does not support drag and drop. ' +
-          'Try using Chrome, Firefox or the Internet Explorer > 10.');
-      } else {
-        self.registerFileDrop(self.openDiagram);
       }
+      if (!self.data.renderer) {
+        self.data.paper = $('#paperId');
+        self.data.renderer = new Package.bpmn.Modeler({
+          container: self.data.paper
+          // , moddleExtensions: {
+          //   qa: qaPackage
+          // }
+        });
+        // check file api availability
+        if (!window.FileList || !window.FileReader) {
+          window.alert(
+            'Looks like you use an older browser that does not support drag and drop. ' +
+            'Try using Chrome, Firefox or the Internet Explorer > 10.');
+        } else {
+          self.registerFileDrop(self.openDiagram);
+        }
 
-      self.data.renderer.on('element.click', function (e) {
-        self.initInspector(e.element.id, e.element.type);
-      });
-    }
-    self.data.currentWorkflow = workflow;
-    Tracker.autorun(function () {
-      var record = Session.get('updated_' + workflow.data._id);
-      if (record && record.bpmn) {
-        self.openDiagram(record.bpmn);
+        self.data.renderer.on('element.click', function (e) {
+          self.initInspector(e.element.id, e.element.type);
+        });
       }
+      self.data.currentWorkflow = workflow;
+      Tracker.autorun(function () {
+        var record = Session.get('updated_' + workflow.data._id);
+        if (record && record.bpmn) {
+          self.openDiagram(record.bpmn);
+        }
+      });
+      self.set('title', workflow.data.name);
+      self.openDiagram(workflow.data.bpmn);
     });
-    self.set('title', workflow.data.name);
-    self.openDiagram(workflow.data.bpmn);
   },
 
   initInspector: function (id, type) {
@@ -95,6 +103,25 @@ Ext.define('orf.view.workflow.design.ViewModel', {
           .removeClass('with-error')
           .addClass('with-diagram');
       }
+
+      // Attach events
+      var eventBus = self.data.renderer.get('eventBus');
+      eventBus.on('element.click', function (e) {
+        //e.element = the model element
+        //e.gfx = the graphical element
+        console.log(event, 'on', e.element.id);
+      });
+
+     var moddle = self.data.renderer.moddle;
+
+     var process = moddle.getElementDescriptor('bpmn:Process');
+     var task = moddle.getType('bpmn:Task');
+     var evt = moddle.getType('bpmn:Event');
+     var gtw = moddle.getType('bpmn:Gateway');
+     var trans = moddle.getType('bpmn:SequenceFlow');
+
+     console.log(self.data.renderer.definitions);
+
     });
   },
 

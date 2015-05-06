@@ -2,7 +2,7 @@ Ext.define('orf.view.workflow.design.Controller', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.workflowdesign',
     onCloseButton: function (btn) {
-      FamousUtils.hideMainTabPanel('workflowdesignmain', 'workflowlistmain', this.getViewModel().get('rect'));
+      FUS.hideMainTabPanel('workflowdesignmain', 'workflowlistmain', this.getViewModel().get('rect'));
     },
     onSaveButton: function (btn) {
       Ext.create('widget.uxNotification', {

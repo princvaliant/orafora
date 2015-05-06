@@ -9,8 +9,10 @@ Ext.define('orf.view.workflow.list.Controller', {
   },
   onWorkflowOpen: function (dataview, selection, comp) {
     var vm = this.getViewModel();
-    var panel = FamousUtils.showMainTabPanel('workflowdesignmain', comp.getBoundingClientRect());
-    panel.getViewModel().init(vm.get('selectedWorkflow'), vm.getStore(), comp.getBoundingClientRect());
+    if (vm.get('selectedWorkflow')) {
+      var panel = FUS.showMainTabPanel('workflowdesignmain', comp.getBoundingClientRect());
+      panel.getViewModel().init(vm.get('selectedWorkflow').data._id, comp.getBoundingClientRect());
+    }
   },
   onHeaderButton: function (btn) {
     var vm = this.getViewModel(),
@@ -73,8 +75,8 @@ Ext.define('orf.view.workflow.list.Controller', {
           height: 150,
           width: 200
         };
-        var panel = FamousUtils.showMainTabPanel('workflowdesignmain', rect);
-        panel.getViewModel().init(model, store, rect);
+        var panel = FUS.showMainTabPanel('workflowdesignmain', rect);
+        panel.getViewModel().init(model.data._id, rect);
       });
       store.sync();
       btn.up('window').close();
