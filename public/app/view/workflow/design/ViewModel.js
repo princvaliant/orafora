@@ -4,36 +4,34 @@ Ext.define('orf.view.workflow.design.ViewModel', {
   data: {
     paper: null,
     renderer: null,
-    title: '',
-    rect: null,
-    store: null
+    _title: '',
+    _rect: null,
+    _store: null
   },
   formulas: {
-
     title: function (get) {
-      return get('title');
+      return get('_title');
     }
   },
   init: function (id, rect) {
 
     var self = this;
-    var store = Ext.create('orf.store.PagedSub', {
+    self.set('_store',  Ext.create('orf.store.PagedSub', {
       model: 'orf.model.workflow.Workflow',
       filters: [{
         property: '_id',
         value: id
       }]
-    });
-    self.set('store', store);
-    self.set('rect', rect);
-    store.load(function (records, operation, success) {
+    }));
+    self.set('_rect', rect);
+    self.data._store.load(function (records, operation, success) {
       var workflow = records[0];
       if (!workflow.data.bpmn) {
-           workflow.data.bpmn = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n " +
-        "<bpmn2:definitions xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:bpmn2=\"http://www.omg.org/spec/BPMN/20100524/MODEL\" xmlns:bpmndi=\"http://www.omg.org/spec/BPMN/20100524/DI\" xmlns:dc=\"http://www.omg.org/spec/DD/20100524/DC\" xmlns:di=\"http://www.omg.org/spec/DD/20100524/DI\" xsi:schemaLocation=\"http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd\" " +
-        "id=\"" + workflow.data._id + "2\" targetNamespace=\"http://bpmn.io/schema/bpmn\">\n" +
-        "<bpmn2:process id=\"" + workflow.data._id + "\" isExecutable=\"false\">\n    <bpmn2:startEvent id=\"StartEvent_1\"/>\n  </bpmn2:process>\n  <bpmndi:BPMNDiagram id=\"BPMNDiagram_1\">\n " +
-        " <bpmndi:BPMNPlane id=\"BPMNPlane_1\" bpmnElement=\"" + workflow.data._id + "1\">\n      <bpmndi:BPMNShape id=\"_BPMNShape_StartEvent_2\" bpmnElement=\"StartEvent_1\">\n        <dc:Bounds height=\"36.0\" width=\"36.0\" x=\"131.0\" y=\"110.0\"/>\n      </bpmndi:BPMNShape>\n    </bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</bpmn2:definitions>";
+        workflow.data.bpmn = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n " +
+          "<bpmn2:definitions xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:bpmn2=\"http://www.omg.org/spec/BPMN/20100524/MODEL\" xmlns:bpmndi=\"http://www.omg.org/spec/BPMN/20100524/DI\" xmlns:dc=\"http://www.omg.org/spec/DD/20100524/DC\" xmlns:di=\"http://www.omg.org/spec/DD/20100524/DI\" xsi:schemaLocation=\"http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd\" " +
+          "id=\"" + workflow.data._id + "2\" targetNamespace=\"http://bpmn.io/schema/bpmn\">\n" +
+          "<bpmn2:process id=\"" + workflow.data._id + "\" isExecutable=\"false\">\n    <bpmn2:startEvent id=\"StartEvent_1\"/>\n  </bpmn2:process>\n  <bpmndi:BPMNDiagram id=\"BPMNDiagram_1\">\n " +
+          " <bpmndi:BPMNPlane id=\"BPMNPlane_1\" bpmnElement=\"" + workflow.data._id + "1\">\n      <bpmndi:BPMNShape id=\"_BPMNShape_StartEvent_2\" bpmnElement=\"StartEvent_1\">\n        <dc:Bounds height=\"36.0\" width=\"36.0\" x=\"131.0\" y=\"110.0\"/>\n      </bpmndi:BPMNShape>\n    </bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</bpmn2:definitions>";
       }
       if (!self.data.renderer) {
         self.data.paper = $('#paperId');
@@ -51,30 +49,25 @@ Ext.define('orf.view.workflow.design.ViewModel', {
         } else {
           self.registerFileDrop(self.openDiagram);
         }
-
-        self.data.renderer.on('element.click', function (e) {
-          self.initInspector(e.element.id, e.element.type);
-        });
       }
       self.data.currentWorkflow = workflow;
+
       Tracker.autorun(function () {
         var record = Session.get('updated_' + workflow.data._id);
-        if (record && record.bpmn) {
-          self.openDiagram(record.bpmn);
+        if (record && record.data.bpmn) {
+          self.openDiagram(record.data.bpmn);
         }
       });
-      self.set('title', workflow.data.name);
+      self.set('_title', workflow.data.name);
       self.openDiagram(workflow.data.bpmn);
     });
   },
 
   initInspector: function (id, type) {
-
     var moddle = this.data.renderer.get('moddle');
   },
 
   save: function () {
-
     var self = this;
     self.data.renderer.saveSVG({
       format: false
@@ -84,7 +77,7 @@ Ext.define('orf.view.workflow.design.ViewModel', {
         format: false
       }, function (err, xml) {
         self.data.currentWorkflow.set('bpmn', xml);
-        self.data.store.sync();
+        self.data._store.sync();
       });
     });
   },
@@ -109,18 +102,10 @@ Ext.define('orf.view.workflow.design.ViewModel', {
       eventBus.on('element.click', function (e) {
         //e.element = the model element
         //e.gfx = the graphical element
-        console.log(event, 'on', e.element.id);
+//        console.log(event, 'on', e.element.id);
       });
 
-     var moddle = self.data.renderer.moddle;
-
-     var process = moddle.getElementDescriptor('bpmn:Process');
-     var task = moddle.getType('bpmn:Task');
-     var evt = moddle.getType('bpmn:Event');
-     var gtw = moddle.getType('bpmn:Gateway');
-     var trans = moddle.getType('bpmn:SequenceFlow');
-
-     console.log(self.data.renderer.definitions);
+ //     console.log(self.data.renderer.definitions);
 
     });
   },

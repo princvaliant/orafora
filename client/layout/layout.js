@@ -1,4 +1,6 @@
 
+
+
 Template.layout.rendered = function () {
   // famous.core.Engine.setOptions({
   //   appMode: false

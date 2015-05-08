@@ -1,5 +1,5 @@
 Ext.define('orf.view.workflow.design.Main', {
-  extend: 'Ext.container.Container',
+  extend: 'Ext.panel.Panel',
   alias: 'widget.workflowdesignmain',
     requires: [
     'orf.view.workflow.design.Paper',
@@ -15,15 +15,13 @@ Ext.define('orf.view.workflow.design.Main', {
   },
   items: [{
     xtype: 'workflowdesignpaper',
-    region: 'center',
-    width: '70%'
+    region: 'center'
   }, {
     xtype: 'workflowdesigninspector',
     collapsible: false,
     stateful: true,
     stateId: 'workflowDesignInspectorId',
     split: true,
-    region: 'south',
-    height: 250
+    region: 'south'
   }]
 });

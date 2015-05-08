@@ -15,9 +15,10 @@ Ext.define('orf.view.workflow.list.Controller', {
     }
   },
   onHeaderButton: function (btn) {
+
     var vm = this.getViewModel(),
       store = vm.getStore(),
-      action = btn.getItemId();
+      action =  btn.text.toLowerCase();
 
     if (action === 'add') {
       var win = Ext.create({

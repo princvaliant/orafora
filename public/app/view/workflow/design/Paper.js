@@ -8,18 +8,23 @@ Ext.define('orf.view.workflow.design.Paper', {
   layout: 'fit',
   dockedItems: [{
     xtype: 'toolbar',
-    style: 'background: #83F791;',
     dock: 'top',
     items: [{
-      action: 'close',
-      text: 'Close',
-      glyph: 'xf00d@FontAwesome',
-      handler: 'onCloseButton'
-    }, {
-      action: 'save',
-      text: 'Save',
-      glyph: 'xf0c7@FontAwesome',
-      handler: 'onSaveButton'
+      xtype: 'buttongroup',
+      defaults: {
+        margin: '0 10 0 0'
+      },
+      items: [{
+        action: 'close',
+        text: 'Close',
+        glyph: 'xf00d@FontAwesome',
+        handler: 'onCloseButton'
+      }, {
+        action: 'save',
+        text: 'Save',
+        glyph: 'xf0c7@FontAwesome',
+        handler: 'onSaveButton'
+      }]
     }, '->', {
       action: 'download',
       text: 'View BPMN 2.0 xml',
@@ -32,7 +37,7 @@ Ext.define('orf.view.workflow.design.Paper', {
     name: 'proctitle',
     style: 'position:absolute;left:88px;top:25px;font-size:24px;font-weight:bold;color:#A3A3A3;',
     bind: {
-        html: '{title}'
+      html: '{title}'
     }
   }, {
     xtype: 'box',

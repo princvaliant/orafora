@@ -31,12 +31,12 @@ Ext.define('orf.view.workflow.list.View', {
     '</tpl>',
     '</tpl>',
     '<div class="x-clear"></div>'
-  )
-  // ,
-  // plugins: [
-  //   Ext.create('Ext.ux.DataView.Animated', {
-  //     duration: 750,
-  //     idProperty: 'id'
-  //   })
-  // ]
+  ),
+  plugins: [
+      Ext.create('Ext.ux.DataView.Animated', {
+          duration: 750,
+          idProperty: 'id'
+      })
+  ]
+
 });

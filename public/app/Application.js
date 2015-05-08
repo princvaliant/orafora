@@ -16,6 +16,9 @@ Ext.define('orf.Application', {
     'orf.model.domain.Main',
     'orf.model.domain.Member',
     'orf.model.workflow.Workflow',
+    'orf.model.workflow.Variable',
+    'orf.model.security.Role',
+    'orf.model.security.User',
 
     'orf.view.base.ListGrid',
     'orf.view.base.FormDialog',
@@ -35,6 +38,14 @@ Ext.define('orf.Application', {
     Ext.Error.handle = function (err) {
       Ext.Msg.alert(err.error || 'Error occured', err.reason || err.msg);
       return true;
+    };
+
+    window.log = function () {
+      log.history = log.history || []; // store logs to an array for reference
+      log.history.push(arguments);
+      if (this.console) {
+        console.log(Array.prototype.slice.call(arguments));
+      }
     };
   }
 });

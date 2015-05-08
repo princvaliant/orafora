@@ -22,7 +22,7 @@
 
           var main;
           var self = FUS;
-          var parentRect = Ext.get('sizerPlaceholder').parent().dom.getBoundingClientRect();
+          var parentRect = Ext.fly('sizerPlaceholder').parent().dom.getBoundingClientRect();
 
           if (!self.panels.hasOwnProperty(panel)) {
 
@@ -70,8 +70,8 @@
 
               FUS.famousMain.content.add(hideModifier).add(posModifier).add(sizeModifier).add(surface);
 
-              var h = Ext.get('sizerPlaceholder').parent().dom.offsetHeight;
-              var w = Ext.get('sizerPlaceholder').parent().dom.offsetWidth;
+              var h = Ext.fly('sizerPlaceholder').parent().dom.offsetHeight;
+              var w = Ext.fly('sizerPlaceholder').parent().dom.offsetWidth;
 
               main = Ext.create({
                   xtype: panel,
@@ -81,9 +81,9 @@
                           var that = this;
                           that.setHeight(h);
                           that.setWidth(w);
-                          Ext.EventManager.onWindowResize(function() {
-                              that.setHeight(Ext.get('sizerPlaceholder').parent().dom.offsetHeight);
-                              that.setWidth(Ext.get('sizerPlaceholder').parent().dom.offsetWidth);
+                          Ext.on('resize',function() {
+                              that.setHeight(Ext.fly('sizerPlaceholder').parent().dom.offsetHeight);
+                              that.setWidth(Ext.fly('sizerPlaceholder').parent().dom.offsetWidth);
                           });
                       }
                   }
@@ -138,7 +138,7 @@
 
           var main;
           var self = FUS;
-          var parentRect = Ext.get('sizerPlaceholder').parent().dom.getBoundingClientRect();
+          var parentRect = Ext.fly('sizerPlaceholder').parent().dom.getBoundingClientRect();
           var active = self.panels[panelToHide];
           if (self.panels[panelToShow]) {
               self.panels[panelToShow].hide.set(1);
@@ -179,7 +179,7 @@
           definition.listeners = {
               beforerender: function() {
                   var that = this;
-                  that.setHeight(definition.height);
+                 that.setHeight(definition.height);
                   that.setWidth(definition.width);
               }
           };

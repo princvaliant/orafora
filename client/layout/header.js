@@ -26,5 +26,9 @@ Template.header.events({
 });
 
 var headerButtonsClicked = function (panel) {
-  FUS.showMainTabPanel(panel, {left: 1300, top: 40, height: 700, width: 960});
+
+   //    var pan = FUS.showMainTabPanel('workflowdesignmain', {left: 1300, top: 40, height: 700, width: 960});
+ // pan.getViewModel().init('0B985DkdM', {left: 500, top: 40, height: 700, width: 960});
+
+  FUS.showMainTabPanel(panel, {left: 800, top: 40, height: 700, width: 1260});
 };

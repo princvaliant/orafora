@@ -9,7 +9,6 @@ Ext.define('orf.view.domain.Controller', {
 
     if (action === 'add') {
       var model = store.insert(0, {name:'Dummy', categoryId:'dummy'})[0];
-      console.log(model);
       vm.set('currentDomain', model);
     }
 

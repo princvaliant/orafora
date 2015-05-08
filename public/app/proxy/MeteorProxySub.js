@@ -102,9 +102,8 @@ Ext.define('orf.proxy.MeteorProxySub', {
         if (recs[i].id === id) {
           for (var f in record) {
             recs[i].data[f] = record[f];
-            Session.set('updated_' + id, record);
           }
-
+          Session.set('updated_' + id, recs[i]);
         }
       }
     }
