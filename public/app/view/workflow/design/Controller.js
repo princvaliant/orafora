@@ -44,5 +44,8 @@ Ext.define('orf.view.workflow.design.Controller', {
 
         win.show();
       });
+    },
+    onPropertiesChanged: function( source, recordId, value, oldValue, eOpts ) {
+      this.getViewModel().saveProperties(source);
     }
   });

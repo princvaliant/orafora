@@ -4,19 +4,16 @@ Ext.define('orf.view.workflow.design.ViewModel', {
   data: {
     paper: null,
     renderer: null,
-    _title: '',
+    title: '',
+    propTitle: '',
+    currentBusinessObject: null,
     _rect: null,
     _store: null
-  },
-  formulas: {
-    title: function (get) {
-      return get('_title');
-    }
   },
   init: function (id, rect) {
 
     var self = this;
-    self.set('_store',  Ext.create('orf.store.PagedSub', {
+    self.set('_store', Ext.create('orf.store.PagedSub', {
       model: 'orf.model.workflow.Workflow',
       filters: [{
         property: '_id',
@@ -36,10 +33,10 @@ Ext.define('orf.view.workflow.design.ViewModel', {
       if (!self.data.renderer) {
         self.data.paper = $('#paperId');
         self.data.renderer = new Package.bpmn.Modeler({
-          container: self.data.paper
-          // , moddleExtensions: {
-          //   qa: qaPackage
-          // }
+          container: self.data.paper,
+          moddleExtensions: {
+            orf: BpmnExtensions
+          }
         });
         // check file api availability
         if (!window.FileList || !window.FileReader) {
@@ -47,7 +44,7 @@ Ext.define('orf.view.workflow.design.ViewModel', {
             'Looks like you use an older browser that does not support drag and drop. ' +
             'Try using Chrome, Firefox or the Internet Explorer > 10.');
         } else {
-          self.registerFileDrop(self.openDiagram);
+          self.registerFileDrop();
         }
       }
       self.data.currentWorkflow = workflow;
@@ -58,7 +55,7 @@ Ext.define('orf.view.workflow.design.ViewModel', {
           self.openDiagram(record.data.bpmn);
         }
       });
-      self.set('_title', workflow.data.name);
+      self.set('title', workflow.data.name);
       self.openDiagram(workflow.data.bpmn);
     });
   },
@@ -96,22 +93,112 @@ Ext.define('orf.view.workflow.design.ViewModel', {
           .removeClass('with-error')
           .addClass('with-diagram');
       }
-
-      // Attach events
+      // Attach event handlers
       var eventBus = self.data.renderer.get('eventBus');
       eventBus.on('element.click', function (e) {
-        //e.element = the model element
-        //e.gfx = the graphical element
-//        console.log(event, 'on', e.element.id);
+        self.loadInspector(e.element.businessObject);
       });
-
- //     console.log(self.data.renderer.definitions);
-
+      eventBus.on('element.changed', function (e) {
+        if (e.element.businessObject === self.data.currentBusinessObject) {
+          self.loadInspector(e.element.businessObject);
+        }
+      });
+      eventBus.on('shape.added', function (e) {
+        if (e.element.businessObject.$parent === undefined && e.element.businessObject.$type !== 'bpmn:SequenceFlow') {
+          self.loadInspector(e.element.businessObject);
+        }
+      });
     });
   },
 
-  registerFileDrop: function (callback) {
+  saveProperties: function (source) {
+    for (var prop in source) {
+      this.data.currentBusinessObject[prop] = source[prop];
+    }
+  },
 
+  loadInspector: function (businessObject) {
+
+    var self = this,
+      moddle = self.data.renderer.get('moddle'),
+      grid = Ext.ComponentQuery.query('workflowdesignproperties')[0],
+      definition = _.filter(BpmnExtensions.types, function (obj) {
+        return _.contains(obj.extends, businessObject.$type);
+      })[0],
+      source = {},
+      sourceConfig = {};
+
+    // Complete edit from previous edit
+    grid.plugins[0].completeEdit();
+
+    var botype = businessObject.$type.replace('bpmn:', '');
+    botype = botype.match(/[A-Z][a-z]+/g).join(' ');
+    botype += ': ' + (businessObject.name || '[name not defined]');
+    self.set('propTitle', botype);
+    self.set('currentBusinessObject', businessObject);
+
+    if (definition) {
+
+      var attrs = _.where(definition.properties, {
+        isAttr: true
+      });
+      _.each(attrs, function (obj) {
+        var value = businessObject[obj.ns.localName] || '';
+        var editor = orf.view.base.Editor.create(obj);
+
+        source[obj.ns.localName] = value;
+        if (obj.type === 'orf:Date') {
+          if (!value) {
+            value = new Date();
+          }
+          source[obj.ns.localName] = Ext.util.Format.date(value, 'm/d/Y');
+        }
+        if (obj.type === 'Boolean') {
+          source[obj.ns.localName] = value ? grid.headerCt.trueText : grid.headerCt.falseText;
+
+        }
+        sourceConfig[obj.ns.localName] = {};
+        sourceConfig[obj.ns.localName].editor = editor;
+      });
+    }
+
+    grid.setSource(source, sourceConfig);
+  },
+
+
+
+  // group = self.getExtension(businessObject, 'orf:Assignment');
+  // if (!group) {
+  //   group = moddle.create('orf:Assignment');
+
+  //   if (!businessObject.extensionElements) {
+  //     businessObject.extensionElements = moddle.create('bpmn:ExtensionElements');
+  //   }
+
+  //   businessObject.extensionElements.get('values').push(group);
+  // }
+
+  // // console.log(businessObject.extensionElements.values);
+
+  // var analysis = self.getExtension(businessObject, 'orf:Assignment');
+
+
+  //console.log(analysis);
+
+  //console.log(self.data.renderer.definitions);
+
+  getExtension: function (element, type) {
+    if (!element.extensionElements) {
+      return null;
+    }
+    return element.extensionElements.values.filter(function (e) {
+      return e.$instanceOf(type);
+    })[0];
+  },
+
+  registerFileDrop: function () {
+
+    var self = this;
     function handleFileSelect(e) {
       e.stopPropagation();
       e.preventDefault();
@@ -120,7 +207,7 @@ Ext.define('orf.view.workflow.design.ViewModel', {
       var reader = new FileReader();
       reader.onload = function (e) {
         var xml = e.target.result;
-        callback(xml);
+        self.openDiagram(xml);
       };
       reader.readAsText(file);
     }

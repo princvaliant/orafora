@@ -8,7 +8,7 @@ Ext.define('orf.view.workflow.list.View', {
   ],
   layout: 'fit',
   store: Ext.create('orf.store.PagedSub', {
-    attrs: {'bpmn':0 },
+ //   attrs: {'bpmn':0 },
     model: 'orf.model.workflow.Workflow'
   }),
   resizable: false,

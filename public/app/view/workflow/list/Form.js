@@ -20,13 +20,13 @@ Ext.define('orf.view.workflow.list.Form', {
     fieldLabel: 'Summary',
     name: 'summary',
     allowBlank: true,
-    height: 120,
+    height: 120
   }, {
     xtype: 'hiddenfield',
-    name: 'svg',
+    name: 'svg'
   }, {
     xtype: 'hiddenfield',
-    name: 'bpmn',
+    name: 'bpmn'
   }],
 
   // Reset and Submit buttons

@@ -7,6 +7,9 @@ Ext.define('orf.model.security.User', {
     name: 'name',
     type: 'string'
   }, {
+    name: 'email',
+    type: 'string'
+  }, {
     name: 'password',
     type: 'string'
   }, {
