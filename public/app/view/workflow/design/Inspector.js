@@ -16,12 +16,22 @@ Ext.define('orf.view.workflow.design.Inspector', {
   },
   items: [{
     xtype: 'workflowdesignproperties',
-    flex: 3
+    width: 400
   }, {
     xtype: 'workflowdesignauthorization',
-    flex: 2
+    reference: 'reflistauth',
+    hidden: true,
+    bind: {
+      hidden: '{authHidden}'
+    },
+    flex: 3
   }, {
     xtype: 'workflowdesignattributes',
+    reference: 'reflistattr',
+    hidden: true,
+    bind: {
+      hidden: '{attrHidden}'
+    },
     flex: 4
   }]
 });

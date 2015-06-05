@@ -13,7 +13,7 @@ deps@1.0.7
 ejson@1.0.6
 extjs51@1.0.0
 fastclick@1.0.3
-gadicohen:famous-views@0.1.32
+gadicohen:famous-views@0.2.2
 geojson-utils@1.0.3
 hashids@0.0.0
 html-tools@1.0.4
@@ -35,7 +35,8 @@ mjn:famous@0.3.5
 mobile-status-bar@1.0.3
 momentjs:moment@2.10.3
 mongo@1.1.0
-mquandalle:jade@0.4.1
+mquandalle:jade@0.4.3
+mquandalle:jade-compiler@0.4.3
 observe-sequence@1.0.6
 ordered-dict@1.0.3
 pierreeric:cssc@1.0.4

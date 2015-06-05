@@ -4,8 +4,6 @@ Ext.define("orf.view.base.Editor", {
 
     var editor;
 
-    console.log(obj);
-
     if (obj.type === 'String') {
       editor = new Ext.form.field.Text({
         editable: true,

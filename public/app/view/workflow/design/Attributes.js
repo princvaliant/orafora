@@ -2,6 +2,7 @@
   extend: 'Ext.grid.Panel',
   alias: 'widget.workflowdesignattributes',
   border: true,
+  multiSelect: true,
   title: 'Attributes',
   viewConfig: {
     emptyText: 'No attributes defined',
@@ -10,39 +11,39 @@
   tools: [{
     type: 'plus',
     tooltip: 'Add',
-    handler: function (event, toolEl, panel) {
-      // Your handler function
-      console.log(event);
-    }
+    handler: 'onAddAttributes'
   }, {
+    type: 'remove',
+    tooltip: 'Delete',
+    handler: 'onDeleteAttributes',
+    bind: {
+      disabled: '{!reflistattr.selection}'
+    }
+  },{
     type: 'copy',
     tooltip: 'Copy',
-    handler: function (event, toolEl, panel) {
-      // Your handler function
-      console.log(event);
+    handler: 'onCopyAttributes',
+    bind: {
+      disabled: '{!reflistattr.selection}'
     }
   }, {
     type: 'paste',
     tooltip: 'Paste',
-    handler: function (event, toolEl, panel) {
-      // Your handler function
-      console.log(event);
-    }
+    handler: 'onPasteAttributes'
   }, {
     type: 'help',
-    handler: function (event, toolEl, panel) {
-      // Your handler function
-      console.log(event);
-    }
+    handler: 'onAddAttributes'
   }],
   initComponent: function () {
 
     var bpmn = _.where(BpmnExtensions.types, {
-      name: 'Authorization'
+      name: 'Attribute'
     })[0];
 
     var store = Ext.create('Ext.data.Store', {
+      storeId: 'attributeStore',
       autoDestroy: true,
+      autoSync: true,
       fields: _.pluck(bpmn.properties, 'name'),
       sorters: [{
         property: 'data',
@@ -50,8 +51,8 @@
       }]
     });
 
-    var rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
-      clicksToMoveEditor: 1,
+    this.editing = Ext.create('Ext.grid.plugin.CellEditing', {
+      clicksToEdit: 1,
       autoCancel: false
     });
 
@@ -66,7 +67,7 @@
     });
 
     Ext.apply(this, {
-      plugins: [rowEditing],
+      plugins: [this.editing],
       store: store,
       columns: columns
     });

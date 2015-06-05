@@ -117,11 +117,33 @@ Ext.define('orf.view.workflow.design.ViewModel', {
     }
   },
 
+  saveAuthorization: function (records) {
+
+    var bo = this.get('currentBusinessObject'),
+      moddle = this.data.renderer.get('moddle');
+    if (!bo.extensionElements) {
+      bo.extensionElements = moddle.create('bpmn:ExtensionElements');
+    }
+    bo.extensionElements.values = _.filter(bo.extensionElements.values, function (x) {
+      return x.$type !== 'orf:Authorization';
+    });
+    for (var record in records) {
+      var auth = moddle.create('orf:Authorization');
+      for (var prop in records[record].data) {
+        if (prop !== 'id') {
+          auth[prop] = records[record].data[prop];
+        }
+      }
+      bo.extensionElements.values.push(auth);
+    }
+  },
+
   loadInspector: function (businessObject) {
 
     var self = this,
       moddle = self.data.renderer.get('moddle'),
       grid = Ext.ComponentQuery.query('workflowdesignproperties')[0],
+      authgrid = Ext.ComponentQuery.query('workflowdesignauthorization')[0],
       definition = _.filter(BpmnExtensions.types, function (obj) {
         return _.contains(obj.extends, businessObject.$type);
       })[0],
@@ -130,7 +152,9 @@ Ext.define('orf.view.workflow.design.ViewModel', {
 
     // Complete edit from previous edit
     grid.plugins[0].completeEdit();
+    authgrid.plugins[0].completeEdit();
 
+    // Initialize title and store currently selected object from graph
     var botype = businessObject.$type.replace('bpmn:', '');
     botype = botype.match(/[A-Z][a-z]+/g).join(' ');
     botype += ': ' + (businessObject.name || '[name not defined]');
@@ -139,6 +163,7 @@ Ext.define('orf.view.workflow.design.ViewModel', {
 
     if (definition) {
 
+      // Retrieve attributes of the selected object in graph
       var attrs = _.where(definition.properties, {
         isAttr: true
       });
@@ -160,32 +185,40 @@ Ext.define('orf.view.workflow.design.ViewModel', {
         sourceConfig[obj.ns.localName] = {};
         sourceConfig[obj.ns.localName].editor = editor;
       });
+
+      // Retrieve authorization objects if exists in graph
+      var auth = _.where(definition.properties, {
+        type: 'orf:Authorization'
+      })[0];
+      if (auth) {
+        self.set('authHidden', false);
+        if (businessObject.extensionElements) {
+          var array = _.filter(businessObject.extensionElements.get('values'), function (x) {
+            return x.$type === 'orf:Authorization';
+          });
+          authgrid.store.loadData(array);
+        } else {
+          authgrid.store.removeAll();
+        }
+      } else {
+        self.set('authHidden', true);
+      }
+
+      // Retrieve attributes object if exists in graph
+      var attr = _.where(definition.properties, {
+        type: 'orf:Attribute'
+      })[0];
+      if (attr) {
+        self.set('attrHidden', false);
+
+      } else {
+        self.set('attrHidden', true);
+      }
     }
 
+    // Initialize property grid with the data from selected object
     grid.setSource(source, sourceConfig);
   },
-
-
-
-  // group = self.getExtension(businessObject, 'orf:Assignment');
-  // if (!group) {
-  //   group = moddle.create('orf:Assignment');
-
-  //   if (!businessObject.extensionElements) {
-  //     businessObject.extensionElements = moddle.create('bpmn:ExtensionElements');
-  //   }
-
-  //   businessObject.extensionElements.get('values').push(group);
-  // }
-
-  // // console.log(businessObject.extensionElements.values);
-
-  // var analysis = self.getExtension(businessObject, 'orf:Assignment');
-
-
-  //console.log(analysis);
-
-  //console.log(self.data.renderer.definitions);
 
   getExtension: function (element, type) {
     if (!element.extensionElements) {
@@ -199,6 +232,7 @@ Ext.define('orf.view.workflow.design.ViewModel', {
   registerFileDrop: function () {
 
     var self = this;
+
     function handleFileSelect(e) {
       e.stopPropagation();
       e.preventDefault();

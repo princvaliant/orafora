@@ -88,7 +88,7 @@ BpmnExtensions = {
       name: "attributes",
       isMany: true,
       type: "Attribute"
-    },{
+    }, {
       name: "authorization",
       isMany: true,
       type: "Authorization"
@@ -122,21 +122,51 @@ BpmnExtensions = {
     }, {
       name: "permission",
       isAttr: true,
-      flex: 2,
+      flex: 1,
       allowBlank: false,
-      type: "Tags",
+      type: "List",
       values: ['ALL', 'W', 'R', 'D']
     }]
   }, {
     name: "Attribute",
     superClass: ["Element"],
     properties: [{
+      name: "idx",
+      isAttr: true,
+      flex: 1,
+      type: "Integer"
+    }, {
       name: "name",
       isAttr: true,
+      allowBlank: false,
+      flex: 4,
       type: "String"
     }, {
-      name: "title",
+      name: "type",
       isAttr: true,
+      allowBlank: false,
+      type: "List",
+      flex: 1,
+      values: ['IN', 'OUT', 'CALC', 'VERIFY']
+    }, {
+      name: "class",
+      isAttr: true,
+      allowBlank: false,
+      type: "List",
+      flex: 1,
+      values: ['STRING', 'INT', 'DOUBLE', 'DATE']
+    }, {
+      name: "allowBlank",
+      isAttr: true,
+      flex: 1,
+      type: "Boolean"
+    }, {
+      name: "allowEdit",
+      isAttr: true,
+      flex: 1,
+      type: "Boolean"
+    }, {
+      name: "title",
       type: "String"
     }]
   }, ],
